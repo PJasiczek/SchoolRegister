@@ -104,13 +104,17 @@ public class PupilLogin extends JFrame implements ActionListener{
 		if(source == btnLogin) {
 			
 			long id = 0;
+			
 			Connection connection = SQLConnection.getConnection();
+			
 			PreparedStatement ps;
 			ResultSet rs;
 			String query;
 
 			try {
+				
 				query = "SELECT id, PESEL, haslo_dostepu FROM uczen WHERE PESEL=? and haslo_dostepu=?";
+				
 				ps = connection.prepareStatement(query);
 				ps.setString(1, textField.getText());
 				ps.setString(2, String.valueOf(passwordField.getPassword()));
@@ -134,14 +138,17 @@ public class PupilLogin extends JFrame implements ActionListener{
 				ps.close();
 
 			} catch (Exception ex) {
+				
 				JOptionPane.showMessageDialog(null, ex);
 			}
 		}
 		else if(source == chckbxShowPassword) {
 			
 			if (chckbxShowPassword.isSelected()) {
+				
 				passwordField.setEchoChar((char) 0);
 			} else {
+				
 				passwordField.setEchoChar('*');
 			}
 		}

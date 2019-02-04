@@ -49,6 +49,10 @@ public class Person {
 		this.lastName = lastName;
 	}
 
+	public String getFirst_LastName() {
+		return firstName + " " + lastName;
+	}
+	
 	public long getContactNumber() {
 		return contactNumber;
 	}

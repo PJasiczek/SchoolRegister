@@ -1,7 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,7 +45,6 @@ public class SearchInfoAboutTeachersPanel extends JFrame {
 			SwingUtilities.updateComponentTreeUI(this);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e1) {
-
 			e1.printStackTrace();
 		}
 		
@@ -92,6 +89,7 @@ public class SearchInfoAboutTeachersPanel extends JFrame {
 				+ "GROUP BY nauczyciel.nauczyciel_id";
 
 		try {
+			
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();
 			table_1.setModel(DbUtils.resultSetToTableModel(rs));
@@ -104,10 +102,13 @@ public class SearchInfoAboutTeachersPanel extends JFrame {
 		JButton btnSearchTeacher = new JButton("Szukaj");
 		btnSearchTeacher.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				if (!textFieldFirstName.getText().isEmpty() && !textFieldLastName.getText().isEmpty()) {
-					table_1.setModel(DbUtils.resultSetToTableModel(Pupil.wyszukajInformacjeoNauczycielu(textFieldFirstName.getText(), textFieldLastName.getText())));
+					
+					table_1.setModel(DbUtils.resultSetToTableModel(Pupil.searchInformationAboutTeachers(textFieldFirstName.getText(), textFieldLastName.getText())));
 				}
 				else {
+					
 					JOptionPane.showMessageDialog(null, "Proszê o wprowadzenie imienia i nazwiska nauczyciela w wyznaczonych polach do wyszukiwania.", "Wyszukiwanie informacji o nauczycielach", JOptionPane.INFORMATION_MESSAGE, null);
 				}
 			}

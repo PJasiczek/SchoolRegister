@@ -1,7 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -16,13 +14,11 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.EmptyBorder;
 
 import Register.SQLConnection;
 
@@ -100,24 +96,33 @@ public class EducatorLogin extends JFrame implements ActionListener{
 		Object source = e.getSource();
 
 		if (source == btnLogin || source == passwordField) {
+			
 			Connection connection = SQLConnection.getConnection();
+			
 			long educatorId = 0;
+			
 			try {
+				
 				String query = "SELECT * FROM wychowawca WHERE PESEL=? and haslo_dostepu=?";
+				
 				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setString(1, textField.getText());
 				ps.setString(2, String.valueOf(passwordField.getPassword()));
 				ResultSet rs = ps.executeQuery();
 
 					if (rs.next()) {
+						
 						educatorId = (rs.getLong("wychowawca_id"));
+						
 						JOptionPane.showMessageDialog(null, "Nast¹pi³o poprawne zalogowanie");
+						
 						EducatorPanel educatorPane = new EducatorPanel(educatorId);
 						educatorPane.setVisible(true);
 						educatorPane.setLocationRelativeTo(null);
 						educatorPane.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						dispose();
 					} else {
+						
 						JOptionPane.showMessageDialog(null, "Nazwa u¿ytkownika lub has³o jest niepoprawne. Spróbuj ponownie!");
 					}
 					
@@ -131,8 +136,10 @@ public class EducatorLogin extends JFrame implements ActionListener{
 		} else if (source == chckbxShowPassword) {
 			
 			if (chckbxShowPassword.isSelected()) {
+				
 				passwordField.setEchoChar((char) 0);
 			} else {
+				
 				passwordField.setEchoChar('*');
 			}
 		} else if (source == btnTeacher) {

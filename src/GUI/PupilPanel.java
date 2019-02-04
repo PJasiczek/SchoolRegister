@@ -1,7 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +18,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 import Register.SQLConnection;
@@ -45,7 +46,7 @@ public class PupilPanel extends JFrame implements ActionListener{
 	private JButton btnLookOverAbsences;
 	private Pupil pupil;
 	private JComboBox<String> comboBoxSubjects;
-	private ArrayList<Subject> SubjectsList = new ArrayList<Subject>();
+	private ArrayList<Subject> subjectsList = new ArrayList<Subject>();
 	private long pupilId;
 	private long classId;
 	private long contactNumber;
@@ -57,6 +58,15 @@ public class PupilPanel extends JFrame implements ActionListener{
 
 	public PupilPanel(long pupilId) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		this.pupilId = pupilId;
+		
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			SwingUtilities.updateComponentTreeUI(this);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e1) {
+			e1.printStackTrace();
+		}
+		
 		connection = SQLConnection.getConnection();
 		
 		setTitle("Uczeñ");
@@ -172,10 +182,11 @@ public class PupilPanel extends JFrame implements ActionListener{
 		
 		try {
 			
-			query = "SELECT PESEL, imie, nazwisko, klasa_id, nr_kontaktowy, data_urodzenia\r\n" + "FROM uczen\r\n" + "WHERE id = " + Long.toString(uczen_id)
+			query = "SELECT PESEL, imie, nazwisko, klasa_id, nr_kontaktowy, data_urodzenia\r\n" + "FROM uczen\r\n" + "WHERE id = " + Long.toString(pupilId)
 					+ " GROUP BY id";
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();
+			
 			while (rs.next()) {
 
 				textFieldPesel.setText(rs.getString("PESEL"));
@@ -189,7 +200,9 @@ public class PupilPanel extends JFrame implements ActionListener{
 			query = "SELECT nazwa\r\n" + "FROM klasa\r\n" + "WHERE klasa_id = " + Long.toString(classId);
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();
+			
 			if (rs.next()) {
+				
 				textFieldClass.setText(rs.getString("nazwa"));
 			}
 			
@@ -197,13 +210,16 @@ public class PupilPanel extends JFrame implements ActionListener{
 					+ Long.toString(classId) + " GROUP BY przedmiot.przedmiot_id ";
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();
+			
 			while (rs.next()) {
+				
 				String name = rs.getString("nazwa_przedmiotu");
-				SubjectsList.add(new Subject(rs.getLong("przedmiot_id"), name));
+				subjectsList.add(new Subject(rs.getLong("przedmiot_id"), name));
 				comboBoxSubjects.addItem(name);
 			}
 
 		} catch (SQLException ex) {
+			
 			ex.printStackTrace();
 		}
 		
@@ -216,19 +232,23 @@ public class PupilPanel extends JFrame implements ActionListener{
 		Object source = e.getSource();
 		
 		if(source == btnLookOverNotes) {
-			table_1.setModel(DbUtils.resultSetToTableModel(pupil.przegladajUwagi()));
+			
+			table_1.setModel(DbUtils.resultSetToTableModel(pupil.lookOverNotes()));
 		}
 		else if(source == btnLookOverGrades) {
+			
 			int index = comboBoxSubjects.getSelectedIndex();
-			long subjectId = SubjectsList.get(index).getId();
-			table_1.setModel(DbUtils.resultSetToTableModel(pupil.przegladajOceny(subjectId)));
+			long subjectId = subjectsList.get(index).getId();
+			table_1.setModel(DbUtils.resultSetToTableModel(pupil.lookOverGrades(subjectId)));
 		}
 		else if(source == btnSearchInfoAboutTeachers) {
-			SearchInfoAboutTeachersPanel searchInfoAbouttearchersPane = new SearchInfoAboutTeachersPanel();
-			searchInfoAbouttearchersPane.setVisible(true);
-			searchInfoAbouttearchersPane.setLocationRelativeTo(null);
+			
+			SearchInfoAboutTeachersPanel searchInfoAboutTearchersPane = new SearchInfoAboutTeachersPanel();
+			searchInfoAboutTearchersPane.setVisible(true);
+			searchInfoAboutTearchersPane.setLocationRelativeTo(null);
 		}
 		else if(source == btnLogout) {
+			
 			PupilLogin pupilLog = new PupilLogin();
 			pupilLog.setVisible(true);
 			pupilLog.setLocationRelativeTo(null);
@@ -236,10 +256,12 @@ public class PupilPanel extends JFrame implements ActionListener{
 			dispose();
 		}
 		else if(source == btnDisplayFinalGrades) {
-			table_1.setModel(DbUtils.resultSetToTableModel(pupil.przegladajOcenyKoncowe()));
+			
+			table_1.setModel(DbUtils.resultSetToTableModel(pupil.lookOverFinalGrade()));
 		}
 		else if(source == btnLookOverAbsences) {
-			table_1.setModel(DbUtils.resultSetToTableModel(pupil.sprawdzNieobecnosci()));
+			
+			table_1.setModel(DbUtils.resultSetToTableModel(pupil.checkAbsence()));
 		}	
 	}
 }

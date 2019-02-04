@@ -1,7 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -16,16 +14,13 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.EmptyBorder;
 
 import Register.SQLConnection;
-
 
 public class TeacherLogin extends JFrame implements ActionListener {
 
@@ -44,7 +39,6 @@ public class TeacherLogin extends JFrame implements ActionListener {
 			SwingUtilities.updateComponentTreeUI(this);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e1) {
-
 			e1.printStackTrace();
 		}
 		
@@ -103,24 +97,31 @@ public class TeacherLogin extends JFrame implements ActionListener {
 		if (source == btnLogin || source == passwordField) {
 			
 			Connection connection = SQLConnection.getConnection();
+			
 			long teacherId = 0;
 			
 			try {
+				
 				String query = "SELECT nauczyciel_id,PESEL,haslo_dostepu FROM nauczyciel WHERE PESEL=? and haslo_dostepu=?";
+				
 				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setString(1, textField.getText());
 				ps.setString(2, String.valueOf(passwordField.getPassword()));
 				ResultSet rs = ps.executeQuery();
 
 					if (rs.next()) {
+						
 						teacherId = (rs.getLong("nauczyciel_id"));
+						
 						JOptionPane.showMessageDialog(null, "Nast¹pi³o poprawne zalogowanie");
+						
 						TeacherPanel teacherPane = new TeacherPanel(teacherId);
 						teacherPane.setVisible(true);
 						teacherPane.setLocationRelativeTo(null);
 						teacherPane.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						dispose();
 					} else {
+						
 						JOptionPane.showMessageDialog(null, "Nazwa u¿ytkownika lub has³o jest niepoprawne. Spróbuj ponownie!");
 					}
 
@@ -128,13 +129,16 @@ public class TeacherLogin extends JFrame implements ActionListener {
 				ps.close();
 
 			} catch (Exception ex) {
+				
 				JOptionPane.showMessageDialog(null, ex);
 			}
 		} else if (source == chckbxShowPassword) {
 			
 			if (chckbxShowPassword.isSelected()) {
+				
 				passwordField.setEchoChar((char) 0);
 			} else {
+				
 				passwordField.setEchoChar('*');
 			}
 		} else if (source == btnEducator) {
