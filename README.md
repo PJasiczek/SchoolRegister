@@ -28,8 +28,8 @@ The second library located in the _/resources_ directory is responsible for thin
 
 ## Features
 To-do list:
-* Add more functionality for the pupils, teacher and educator
-* Make functionality for the administrator
+* Add more functionality for the pupils, teacher and educator,
+* Make functionality for the administrator.
 
 ## Status
 Project is: _in progress_.
