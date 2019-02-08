@@ -13,8 +13,7 @@
 Electronic school register application created for the needs of laboratory classes.
 
 ## Screenshots
-<p style="text-align:center;"><img src="./img/screenshot1.png"/></p>
-
+![Example screenshot](./img/screenshot1.png)
 ![Example screenshot](./img/screenshot2.png)
 ![Example screenshot](./img/screenshot3.png)
 ![Example screenshot](./img/screenshot4.png)
