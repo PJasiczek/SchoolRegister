@@ -38,7 +38,7 @@ public class Teacher extends Pupil {
 			
 			Connection connection = SQLConnection.getConnection();
 			
-			String query = "SELECT klasa_id, nazwa\r\n" + "FROM klasa\r\n" + "GROUP BY klasa_id";
+			String query = "SELECT class_id, name\r\n" + "FROM class\r\n" + "GROUP BY class_id";
 
 			PreparedStatement ps = connection.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
@@ -47,8 +47,8 @@ public class Teacher extends Pupil {
 			
 			while (rs.next()) {
 				
-				classId = rs.getLong("klasa_id");
-				String name = rs.getString("nazwa");
+				classId = rs.getLong("class_id");
+				String name = rs.getString("name");
 				classList.add(new Class(classId, name));
 				comboBoxClass.addItem(name);
 			}
@@ -65,9 +65,9 @@ public class Teacher extends Pupil {
 			
 			Connection connection = SQLConnection.getConnection();
 			
-			String query = "SELECT przedmiot.przedmiot_id, przedmiot.nazwa_przedmiotu\r\n" + "FROM przedmiot, klasa\r\n"
-					+ "WHERE klasa.klasa_id=? and przedmiot.klasa_id=klasa.klasa_id\r\n"
-					+ "and przedmiot.nauczyciel_id=? " + "GROUP BY przedmiot.przedmiot_id";
+			String query = "SELECT subject.subject_id, subject.subject_name\r\n" + "FROM subject, class\r\n"
+					+ "WHERE class.class_id=? and subject.class_id=class.class_id\r\n"
+					+ "and subject.teacher_id=? " + "GROUP BY subject.subject_id";
 
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setLong(1, classId);
@@ -77,8 +77,8 @@ public class Teacher extends Pupil {
 
 			while (rs.next()) {
 				
-				long subjectId = rs.getLong("przedmiot_id");
-				String name = rs.getString("nazwa_przedmiotu");
+				long subjectId = rs.getLong("subject_id");
+				String name = rs.getString("subject_name");
 				subjectsList.add(new Subject(subjectId, name));
 				comboBoxSubjects.addItem(name);
 			}
@@ -94,7 +94,7 @@ public class Teacher extends Pupil {
 			
 			Connection connection = SQLConnection.getConnection();
 			
-			String query = "SELECT id, imie, nazwisko, nr_kontaktowy, data_urodzenia\r\n" + "FROM uczen\r\n" + "WHERE klasa_id = ?";
+			String query = "SELECT id, first_name, last_name, contact_number, date_of_birth\r\n" + "FROM pupil\r\n" + "WHERE class_id = ?";
 			
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setLong(1, classId);
@@ -104,10 +104,10 @@ public class Teacher extends Pupil {
 			while (rs.next()) {
 				
 				long pupilId = rs.getLong("id");
-				String firstName = rs.getString("imie");
-				String lastName = rs.getString("nazwisko");
-				long contactNumber = rs.getLong("nr_kontaktowy");
-				String dateOfBirth = rs.getString("data_urodzenia");
+				String firstName = rs.getString("first_name");
+				String lastName = rs.getString("last_name");
+				long contactNumber = rs.getLong("contact_number");
+				String dateOfBirth = rs.getString("date_of_birth");
 				
 				pupilsList.add(new Pupil(pupilId, firstName, lastName, contactNumber, dateOfBirth));
 				comboBoxPupils.addItem(firstName + " " + lastName);
@@ -127,7 +127,7 @@ public class Teacher extends Pupil {
 			
 			Connection connection = SQLConnection.getConnection();
 			
-			String query = "SELECT ocena_id\r\n" + "FROM ocena\r\n" + "WHERE uczen_id=? and przedmiot_id=?";
+			String query = "SELECT grade_id\r\n" + "FROM grade\r\n" + "WHERE pupil_id=? and subject_id=?";
 	
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setLong(1, pupilId);
@@ -137,7 +137,7 @@ public class Teacher extends Pupil {
 			
 			while(rs.next()) {
 				
-				rs.getLong("ocena_id");
+				rs.getLong("grade_id");
 				decision = rs.next();
 			}
 		}catch (Exception ex) {
@@ -150,7 +150,7 @@ public class Teacher extends Pupil {
 				
 				Connection connection = SQLConnection.getConnection();
 				
-				String query = "INSERT INTO ocena (ocena_id,przedmiot_id,oceny,ocena,uczen_id) VALUES (?,?,?,?,?) ;";
+				String query = "INSERT INTO grade (grade_id,subject_id,grades,grade,pupil_id) VALUES (?,?,?,?,?) ;";
 				
 				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setString(1, null);
@@ -171,8 +171,8 @@ public class Teacher extends Pupil {
 			try {
 				Connection connection = SQLConnection.getConnection();
 				
-				String query = "UPDATE ocena SET oceny='" + grades + "'," + "ocena='" + grade
-						+ "' WHERE uczen_id=" + pupilId + ";";
+				String query = "UPDATE grade SET grades='" + grades + "'," + "grade='" + grade
+						+ "' WHERE pupil_id=" + pupilId + ";";
 				
 				PreparedStatement st = connection.prepareStatement(query);
 				st.executeUpdate();
@@ -193,7 +193,7 @@ public class Teacher extends Pupil {
 			
 			Connection connection = SQLConnection.getConnection();
 			
-			String query = "SELECT ocena_id\r\n" + "FROM ocena\r\n" + "WHERE uczen_id=? and przedmiot_id=?";
+			String query = "SELECT grade_id\r\n" + "FROM grade\r\n" + "WHERE pupil_id=? and subject_id=?";
 	
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setLong(1, pupilId);
@@ -202,7 +202,7 @@ public class Teacher extends Pupil {
 			
 			while(rs.next()) {
 				
-				rs.getLong("ocena_id");
+				rs.getLong("grade_id");
 				decision = rs.next();
 			}
 		}catch (Exception ex) {
@@ -216,7 +216,7 @@ public class Teacher extends Pupil {
 				
 				Connection connection = SQLConnection.getConnection();
 				
-				String query = "INSERT INTO ocena (ocena_id,przedmiot_id,oceny,ocena,uczen_id) VALUES (?,?,?,?,?) ;";
+				String query = "INSERT INTO grade (grade_id,subject_id,grades,grade,pupil_id) VALUES (?,?,?,?,?) ;";
 				
 				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setString(1, null);
@@ -237,8 +237,8 @@ public class Teacher extends Pupil {
 				
 				Connection connection = SQLConnection.getConnection();
 				
-				String query = "UPDATE ocena SET oceny='" + grades + "'," + "ocena='" + grade
-						+ "' WHERE uczen_id=" + pupilId + ";";
+				String query = "UPDATE grade SET grades='" + grades + "'," + "grade='" + grade
+						+ "' WHERE pupil_id=" + pupilId + ";";
 				
 				PreparedStatement st = connection.prepareStatement(query);
 				st.executeUpdate();
@@ -263,7 +263,7 @@ public class Teacher extends Pupil {
 			try {
 				Connection connection = SQLConnection.getConnection();
 	
-				String query = "INSERT INTO uwaga (uwaga_id,uwaga,uczen_id) VALUES (?,?,?) ;";
+				String query = "INSERT INTO note (note_id,note,pupil_id) VALUES (?,?,?) ;";
 				PreparedStatement ps = connection.prepareStatement(query);
 	
 				ps.setString(1, null);
@@ -287,7 +287,7 @@ public class Teacher extends Pupil {
 			
 			Connection connection = SQLConnection.getConnection();
 
-			String query = "INSERT INTO nieobecnosc (nieobecnosc_id,uczen_id,przedmiot_id,nauczyciel_id,data,klasa_id) VALUES (?,?,?,?,?,?) ;";
+			String query = "INSERT INTO absence (absence_id,pupil_id,subject_id,teacher_id,date,class_id) VALUES (?,?,?,?,?,?) ;";
 			
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setString(1, null);
@@ -308,9 +308,9 @@ public class Teacher extends Pupil {
 	
 	public ResultSet lookOverGrades(long classId, long subjectId) {
 		
-		String query = "SELECT uczen.numer_z_dziennika as 'Nr.', uczen.imie as 'Imie', uczen.nazwisko as 'Nazwisko', uczen.data_urodzenia as 'Data urodzenia', \r\n"
-				+ "ocena.oceny as 'Oceny Czastkowe', ocena.ocena as 'Ocena Semestralna'\r\n" + "FROM uczen, ocena\r\n"
-				+ "WHERE ocena.uczen_id=uczen.id\r\n" + "and uczen.klasa_id=?\r\n" + "and ocena.przedmiot_id=? \r\n" + "ORDER BY numer_z_dziennika";
+		String query = "SELECT pupil.register_number as 'Nr.', pupil.first_name as 'Imie', pupil.last_name as 'Nazwisko', pupil.date_of_birth as 'Data urodzenia', \r\n"
+				+ "grade.grades as 'Oceny Czastkowe', grade.grade as 'Ocena Semestralna'\r\n" + "FROM pupil, grade\r\n"
+				+ "WHERE grade.pupil_id=pupil.id\r\n" + "and pupil.class_id=?\r\n" + "and grade.subject_id=? \r\n" + "ORDER BY register_number";
 		
 		try {
 			

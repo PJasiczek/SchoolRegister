@@ -113,7 +113,7 @@ public class PupilLogin extends JFrame implements ActionListener{
 
 			try {
 				
-				query = "SELECT id, PESEL, haslo_dostepu FROM uczen WHERE PESEL=? and haslo_dostepu=?";
+				query = "SELECT id, PESEL, password FROM pupil WHERE PESEL=? and password=?";
 				
 				ps = connection.prepareStatement(query);
 				ps.setString(1, textField.getText());

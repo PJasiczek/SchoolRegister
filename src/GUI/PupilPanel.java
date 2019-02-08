@@ -182,7 +182,7 @@ public class PupilPanel extends JFrame implements ActionListener{
 		
 		try {
 			
-			query = "SELECT PESEL, imie, nazwisko, klasa_id, nr_kontaktowy, data_urodzenia\r\n" + "FROM uczen\r\n" + "WHERE id = " + Long.toString(pupilId)
+			query = "SELECT PESEL, first_name, last_name, class_id, contact_number, date_of_birth\r\n" + "FROM pupil\r\n" + "WHERE id = " + Long.toString(pupilId)
 					+ " GROUP BY id";
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -190,14 +190,14 @@ public class PupilPanel extends JFrame implements ActionListener{
 			while (rs.next()) {
 
 				textFieldPesel.setText(rs.getString("PESEL"));
-				textFieldFirstName.setText(rs.getString("imie"));
-				textFieldLastName.setText(rs.getString("nazwisko"));
-				this.classId = rs.getLong("klasa_id");
-				this.contactNumber = rs.getLong("nr_kontaktowy");
-				this.dateOfBirth = rs.getString("data_urodzenia");
+				textFieldFirstName.setText(rs.getString("first_name"));
+				textFieldLastName.setText(rs.getString("last_name"));
+				this.classId = rs.getLong("class_id");
+				this.contactNumber = rs.getLong("contact_number");
+				this.dateOfBirth = rs.getString("date_of_birth");
 			}
 			
-			query = "SELECT nazwa\r\n" + "FROM klasa\r\n" + "WHERE klasa_id = " + Long.toString(classId);
+			query = "SELECT name\r\n" + "FROM class\r\n" + "WHERE class_id = " + Long.toString(classId);
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();
 			
@@ -206,15 +206,15 @@ public class PupilPanel extends JFrame implements ActionListener{
 				textFieldClass.setText(rs.getString("nazwa"));
 			}
 			
-			query = "SELECT przedmiot_id, nazwa_przedmiotu \r\n" + "FROM przedmiot\r\n" + "WHERE klasa_id = "
-					+ Long.toString(classId) + " GROUP BY przedmiot.przedmiot_id ";
+			query = "SELECT subject_id, subject_name \r\n" + "FROM subject\r\n" + "WHERE class_id = "
+					+ Long.toString(classId) + " GROUP BY subject.subject_id ";
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();
 			
 			while (rs.next()) {
 				
-				String name = rs.getString("nazwa_przedmiotu");
-				subjectsList.add(new Subject(rs.getLong("przedmiot_id"), name));
+				String name = rs.getString("subject_name");
+				subjectsList.add(new Subject(rs.getLong("subject_id"), name));
 				comboBoxSubjects.addItem(name);
 			}
 

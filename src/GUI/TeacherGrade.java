@@ -115,7 +115,7 @@ public class TeacherGrade extends JDialog implements ActionListener{
 			
 			Connection connection = SQLConnection.getConnection();
 			
-			String query = "SELECT oceny, ocena FROM ocena WHERE uczen_id=? and przedmiot_id=?";
+			String query = "SELECT grades, grade FROM grade WHERE pupil_id=? and subject_id=?";
 			
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setLong(1, pupilId);
@@ -124,8 +124,8 @@ public class TeacherGrade extends JDialog implements ActionListener{
 			
 			while (rs.next()) {
 				
-				textFieldGrades.setText((rs.getString("oceny")));
-				textFieldGrade.setText((rs.getString("ocena")));
+				textFieldGrades.setText((rs.getString("grades")));
+				textFieldGrade.setText((rs.getString("grade")));
 			}
 
 		} catch (Exception ex) {

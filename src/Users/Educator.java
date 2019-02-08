@@ -23,9 +23,9 @@ public class Educator extends Teacher {
 			
 			Connection connection = SQLConnection.getConnection();
 			
-			String query = "SELECT przedmiot.przedmiot_id, przedmiot.nazwa_przedmiotu\r\n" + "FROM przedmiot, klasa\r\n"
-					+ "WHERE klasa.klasa_id=? and przedmiot.klasa_id=klasa.klasa_id\r\n"
-					+ "GROUP BY przedmiot.przedmiot_id";
+			String query = "SELECT subject.subject_id, subject.subject_name\r\n" + "FROM subject, class\r\n"
+					+ "WHERE class.class_id=? and subject.class_id=class.class_id\r\n"
+					+ "GROUP BY subject.subject_id";
 
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setLong(1, classId);
@@ -33,8 +33,8 @@ public class Educator extends Teacher {
 
 			while (rs.next()) {
 				
-				long subjectId = rs.getLong("przedmiot_id");
-				String name = rs.getString("nazwa_przedmiotu");
+				long subjectId = rs.getLong("subject_id");
+				String name = rs.getString("subject_name");
 				subjectsList.add(new Subject(subjectId, name));
 				comboBoxSubjects.addItem(name);
 			}
@@ -50,9 +50,9 @@ public class Educator extends Teacher {
 			
 			Connection connection = SQLConnection.getConnection();
 			
-			String query = "UPDATE uczen SET PESEL='" + pesel + "'," + "imie='" + firstName + "'," + "nazwisko='" + lastName
-					+ "'," + "adres_zamieszkania='" + address + "'," + "imie_matki='" + motherName + "'," + "imie_ojca='"
-					+ fatherName + "'," + "nr_kontaktowy='" + contactNumber + "'," + "plec='" + sex + "'," + "data_urodzenia='" + dateOfBirth
+			String query = "UPDATE pupil SET PESEL='" + pesel + "'," + "first_name='" + firstName + "'," + "last_name='" + lastName
+					+ "'," + "address='" + address + "'," + "mother_name='" + motherName + "'," + "father_name='"
+					+ fatherName + "'," + "contact_number='" + contactNumber + "'," + "sex='" + sex + "'," + "date_of_birth='" + dateOfBirth
 					+ "' WHERE id=" + pupilId + ";";
 			
 			PreparedStatement st = connection.prepareStatement(query);
@@ -69,7 +69,7 @@ public class Educator extends Teacher {
 			
 			Connection connection = SQLConnection.getConnection();
 			
-			String query = "UPDATE uczen SET haslo_dostepu='" + password + "' WHERE id=" + pupilId + ";";
+			String query = "UPDATE pupil SET password='" + password + "' WHERE id=" + pupilId + ";";
 			
 			PreparedStatement st = connection.prepareStatement(query);
 			st.executeUpdate();

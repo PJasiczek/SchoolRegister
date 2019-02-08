@@ -103,7 +103,7 @@ public class EducatorLogin extends JFrame implements ActionListener{
 			
 			try {
 				
-				String query = "SELECT * FROM wychowawca WHERE PESEL=? and haslo_dostepu=?";
+				String query = "SELECT * FROM educator WHERE PESEL=? and password=?";
 				
 				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setString(1, textField.getText());
@@ -112,7 +112,7 @@ public class EducatorLogin extends JFrame implements ActionListener{
 
 					if (rs.next()) {
 						
-						educatorId = (rs.getLong("wychowawca_id"));
+						educatorId = (rs.getLong("educator_id"));
 						
 						JOptionPane.showMessageDialog(null, "Nast¹pi³o poprawne zalogowanie");
 						

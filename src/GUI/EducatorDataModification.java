@@ -201,7 +201,7 @@ public class EducatorDataModification extends JDialog implements ActionListener 
 		
 		try {
 			
-			String query = "SELECT * FROM uczen WHERE id=?";
+			String query = "SELECT * FROM pupil WHERE id=?";
 			Connection connection = SQLConnection.getConnection();
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setLong(1, pupilId);
@@ -210,14 +210,14 @@ public class EducatorDataModification extends JDialog implements ActionListener 
 			while (rs.next()) {
 				
 				textFieldPesel.setText((rs.getString("PESEL")));
-				textFieldFirstName.setText((rs.getString("imie")));
-				textFieldLastName.setText((rs.getString("nazwisko")));
-				textFieldAddress.setText((rs.getString("adres_zamieszkania")));
-				textFieldMotherName.setText((rs.getString("imie_matki")));
-				textFieldFatherName.setText((rs.getString("imie_ojca")));
-				textFieldContactNumber.setText((rs.getString("nr_kontaktowy")));
-				textFieldSex.setText((rs.getString("plec")));
-				textFieldDateOfBirth.setText((rs.getString("data_urodzenia")));
+				textFieldFirstName.setText((rs.getString("first_name")));
+				textFieldLastName.setText((rs.getString("last_name")));
+				textFieldAddress.setText((rs.getString("address")));
+				textFieldMotherName.setText((rs.getString("mother_name")));
+				textFieldFatherName.setText((rs.getString("father_name")));
+				textFieldContactNumber.setText((rs.getString("contact_number")));
+				textFieldSex.setText((rs.getString("sex")));
+				textFieldDateOfBirth.setText((rs.getString("date_of_birth")));
 			}
 
 		} catch (Exception ex) {

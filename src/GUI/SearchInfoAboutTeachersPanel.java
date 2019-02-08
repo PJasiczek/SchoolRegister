@@ -83,10 +83,10 @@ public class SearchInfoAboutTeachersPanel extends JFrame {
 		contentPane.add(textFieldLastName);
 		textFieldLastName.setColumns(10);
 
-		query = "SELECT nauczyciel.imie as 'Imie', nauczyciel.nazwisko as 'Nazwisko', nauczyciel.tytul_naukowy as 'Tytul', \r\n"
-				+ "nauczyciel.nr_kontaktowy as 'Numer kontaktowy', przedmiot.nazwa_przedmiotu as 'Prowadzony przedmiot'\r\n"
-				+ "FROM nauczyciel, przedmiot\r\n" + "WHERE przedmiot.nauczyciel_id=nauczyciel.nauczyciel_id\r\n"
-				+ "GROUP BY nauczyciel.nauczyciel_id";
+		query = "SELECT teacher.first_name as 'Imie', teacher.last_name as 'Nazwisko', teacher.academic_title as 'Tytul', \r\n"
+				+ "teacher.contact_number as 'Numer kontaktowy', subject.subject_name as 'Prowadzony przedmiot'\r\n"
+				+ "FROM teacher, subject\r\n" + "WHERE subject.teacher_id=teacher.teacher_id\r\n"
+				+ "GROUP BY teacher.teacher_id";
 
 		try {
 			

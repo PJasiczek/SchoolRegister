@@ -18,8 +18,8 @@ public class Pupil extends Person{
 		
 		Connection connection = SQLConnection.getConnection();
 		
-		String query = "SELECT uwaga as 'Uwagi'\r\n" + "FROM uwaga\r\n" + "WHERE uczen_id= " + Long.toString(this.id)
-		+ " GROUP BY uwaga_id";
+		String query = "SELECT note as 'Uwagi'\r\n" + "FROM note\r\n" + "WHERE pupil_id= " + Long.toString(this.id)
+		+ " GROUP BY note_id";
 		
 		try {
 			
@@ -38,9 +38,9 @@ public class Pupil extends Person{
 	
 		Connection connection = SQLConnection.getConnection();
 		
-		String query = "SELECT ocena as 'Ocena Koncowa', oceny as 'Oceny Czastkowe' " + "FROM ocena\r\n"
-				+ "WHERE przedmiot_id = " + Long.toString(subjectId) + " AND uczen_id=" + Long.toString(this.id)
-				+ " GROUP BY przedmiot_id";
+		String query = "SELECT grade as 'Ocena Koncowa', grades as 'Oceny Czastkowe' " + "FROM grade\r\n"
+				+ "WHERE subject_id = " + Long.toString(subjectId) + " AND pupil_id=" + Long.toString(this.id)
+				+ " GROUP BY subject_id";
 		
 		try {
 			
@@ -59,9 +59,9 @@ public class Pupil extends Person{
 		
 		Connection connection = SQLConnection.getConnection();
 		
-		String query = "SELECT przedmiot.nazwa_przedmiotu as 'Przedmiot', ocena.ocena as 'Oceny Koncowe'\r\n"
-				+ "FROM przedmiot, ocena\r\n" + "WHERE ocena.przedmiot_id=przedmiot.przedmiot_id\r\n"
-				+ "and ocena.uczen_id= " + Long.toString(id) + " GROUP BY ocena.ocena_id";
+		String query = "SELECT subject.subject_name as 'Przedmiot', grade.grade as 'Oceny Koncowe'\r\n"
+				+ "FROM subject, grade\r\n" + "WHERE grade.subject_id=subject.subject_id\r\n"
+				+ "and grade.pupil_id= " + Long.toString(id) + " GROUP BY grade.grade_id";
 		
 		try {
 			
@@ -81,10 +81,10 @@ public class Pupil extends Person{
 		
 		Connection connection = SQLConnection.getConnection();
 		
-		String query = "SELECT nauczyciel.imie as 'Imie', nauczyciel.nazwisko as 'Nazwisko', przedmiot.nazwa_przedmiotu as 'Przedmiot', nieobecnosc.data as 'Data'\r\n"
-				+ "FROM nauczyciel, przedmiot, nieobecnosc\r\n"
-				+ "WHERE nieobecnosc.nauczyciel_id=nauczyciel.nauczyciel_id and nieobecnosc.przedmiot_id=przedmiot.przedmiot_id\r\n"
-				+ "and nieobecnosc.uczen_id= " + Long.toString(id) + " GROUP BY nieobecnosc.nieobecnosc_id";
+		String query = "SELECT teacher.first_name as 'Imie', teacher.last_name as 'Nazwisko', subject.subject_name as 'Przedmiot', absence.date as 'Data'\r\n"
+				+ "FROM teacher, subject, absence\r\n"
+				+ "WHERE absence.teacher_id=teacher.teacher_id and absence.subject_id=subject.subject_id\r\n"
+				+ "and absence.pupil_id= " + Long.toString(id) + " GROUP BY absence.absence_id";
 		
 		try {
 			
@@ -104,11 +104,11 @@ public class Pupil extends Person{
 		
 		Connection connection = SQLConnection.getConnection();
 		
-		String query = "SELECT nauczyciel.imie as 'Imie', nauczyciel.nazwisko as 'Nazwisko', nauczyciel.tytul_naukowy as 'Tytul', "
-				+ "nauczyciel.nr_kontaktowy as 'Numer kontaktowy', przedmiot.nazwa_przedmiotu as 'Prowadzony przedmiot'\r\n"
-				+ "FROM nauczyciel, przedmiot\r\n" + "where przedmiot.nauczyciel_id=nauczyciel.nauczyciel_id\r\n"
-				+ "AND nauczyciel.imie= '" + firstName + "' and nauczyciel.nazwisko= '"
-				+ lastName + "' GROUP BY nauczyciel.nauczyciel_id";
+		String query = "SELECT teacher.first_name as 'Imie', teacher.last_name as 'Nazwisko', teacher.academic_title as 'Tytul', "
+				+ "teacher.contact_number as 'Numer kontaktowy', subject.subject_name as 'Prowadzony przedmiot'\r\n"
+				+ "FROM teacher, subject\r\n" + "where subject.teacher_id=teacher.teacher_id\r\n"
+				+ "AND teacher.first_name= '" + firstName + "' and teacher.last_name= '"
+				+ lastName + "' GROUP BY teacher.teacher_id";
 		
 		try {
 			

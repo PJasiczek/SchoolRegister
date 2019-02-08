@@ -196,19 +196,19 @@ public class TeacherPanel extends JFrame implements ActionListener{
 			
 			Connection connection = SQLConnection.getConnection();
 			
-			String query = "SELECT imie, nazwisko, nr_kontaktowy, data_urodzenia, tytul_naukowy\r\n" + "FROM nauczyciel\r\n" + "WHERE nauczyciel_id = " + Long.toString(this.teacherId)
-					+ " GROUP BY nauczyciel_id";
+			String query = "SELECT first_name, last_name, contact_number, date_of_birth, academic_title\r\n" + "FROM teacher\r\n" + "WHERE teacher_id = " + Long.toString(this.teacherId)
+					+ " GROUP BY teacher_id";
 			
 			PreparedStatement ps = connection.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			
 			while (rs.next()) {
 
-				textFieldFirstName.setText(rs.getString("imie"));
-				textFieldLastName.setText(rs.getString("nazwisko"));
-				this.contactNumber = rs.getLong("nr_kontaktowy");
-				this.dateOfBirth = rs.getString("data_urodzenia");
-				this.academicTitle = rs.getString("tytul_naukowy");
+				textFieldFirstName.setText(rs.getString("first_name"));
+				textFieldLastName.setText(rs.getString("last_name"));
+				this.contactNumber = rs.getLong("contact_number");
+				this.dateOfBirth = rs.getString("date_of_birth");
+				this.academicTitle = rs.getString("academic_title");
 			}
 		} catch (Exception ex) {
 			
